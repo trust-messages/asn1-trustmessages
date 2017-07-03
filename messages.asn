@@ -11,10 +11,11 @@ Message ::= CHOICE {
 FormatRequest ::= [APPLICATION 0] IMPLICIT INTEGER
 
 FormatResponse ::= [APPLICATION 1] IMPLICIT SEQUENCE {
-  rid         INTEGER,
-  format      Format,
-  assessment  PrintableString,
-  trust       PrintableString
+  rid             INTEGER,
+  assessment-id   Format,
+  assessment-def  PrintableString,
+  trust-id        Format,
+  trust-def       PrintableString
 }
 
 DataRequest ::= [APPLICATION 2] IMPLICIT SEQUENCE {
@@ -24,10 +25,10 @@ DataRequest ::= [APPLICATION 2] IMPLICIT SEQUENCE {
 }
 
 DataResponse ::= [APPLICATION 3] IMPLICIT SEQUENCE {
-  provider  Entity,
+  rid       INTEGER,
   format    Format,
   type      ENUMERATED { trust (0), assessment (1) },
-  rid       INTEGER,
+  provider  Entity,
   response  SEQUENCE OF Rating
 }
 
