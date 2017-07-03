@@ -8,9 +8,10 @@ Message ::= CHOICE {
   fault             Fault
 }
 
-FormatRequest ::= [APPLICATION 0] IMPLICIT NULL
+FormatRequest ::= [APPLICATION 0] IMPLICIT INTEGER
 
 FormatResponse ::= [APPLICATION 1] IMPLICIT SEQUENCE {
+  rid         INTEGER,
   format      Format,
   assessment  PrintableString,
   trust       PrintableString
@@ -62,6 +63,7 @@ Value ::= CHOICE {
 }
 
 Fault ::= [APPLICATION 7] IMPLICIT SEQUENCE {
+  rid     INTEGER,
   value   ENUMERATED { invalid-parameters (0), internal-error (1) },
   message PrintableString
 }
