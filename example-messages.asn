@@ -1,0 +1,62 @@
+http://asn1-playground.oss.com/
+
+
+message Message ::= fault
+{
+    rid 10,
+    message "hello"
+}
+
+
+-- format-request [size=4B]
+774
+
+FormatResponse:
+ rid=774
+ assessment-id=1.1.1
+ assessment-def=ValueFormat DEFINITIONS ::= BEGIN ValueFormat ::= ENUMERATED { very-bad (0), bad (1), neutral (2), good (3), very-good (4)} END
+ trust-id=1.1.1
+ trust-def=ValueFormat DEFINITIONS ::= BEGIN ValueFormat ::= ENUMERATED { very-bad (0), bad (1), neutral (2), good (3), very-good (4)} END
+
+
+DataRequest:
+ rid=2581
+ type='assessment'
+ query=Query:
+  log=Logical:
+   op='and'
+   l=Query:
+    cmp=Comparison:
+     op='eq'
+     value=Value:
+      target=bob
+   r=Query:
+    cmp=Comparison:
+     op='eq'
+     value=Value:
+      service=seller
+
+DataResponse:
+ rid=2581
+ format=1.1.1
+ type='assessment'
+ provider=python
+ response=SequenceOf:
+  Rating:
+   source=charlie
+   target=bob
+   service=seller
+   date=37
+   value=0x0a0102
+  Rating:
+   source=david
+   target=bob
+   service=seller
+   date=53
+   value=0x0a0103
+  Rating:
+   source=eve
+   target=bob
+   service=seller
+   date=69
+   value=0x0a0104

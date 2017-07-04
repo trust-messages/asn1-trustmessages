@@ -65,7 +65,7 @@ Value ::= CHOICE {
 
 Fault ::= [APPLICATION 7] IMPLICIT SEQUENCE {
   rid     INTEGER,
-  value   ENUMERATED { invalid-parameters (0), internal-error (1) },
+  value   ENUMERATED { invalid-parameters (0), internal-error (1) }, -- todo: remove!
   message PrintableString
 }
 
