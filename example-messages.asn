@@ -1,62 +1,57 @@
 http://asn1-playground.oss.com/
 
+message Message ::= format-request 774
 
-message Message ::= fault
-{
-    rid 10,
-    message "hello"
+message Message ::= format-response {
+  rid 774,
+  assessment-id { 1 1 1 }
+  assessment-def "Example ASN.1 definitions"
+  trust-id { 1 1 1 }
+  trust-def "Example ASN.1 definitions"
 }
 
+message Message ::= data-request {
+  rid 113,
+  type assessment,
+  query cmp: {
+    op eq,
+    value: source "alice"
+  }
+}
 
--- format-request [size=4B]
-774
+message Message ::= data-request {
+  rid 113,
+  type assessment,
+  query cmp: {
+    op eq,
+    value target: "bob"
+  }
+}
 
-FormatResponse:
- rid=774
- assessment-id=1.1.1
- assessment-def=ValueFormat DEFINITIONS ::= BEGIN ValueFormat ::= ENUMERATED { very-bad (0), bad (1), neutral (2), good (3), very-good (4)} END
- trust-id=1.1.1
- trust-def=ValueFormat DEFINITIONS ::= BEGIN ValueFormat ::= ENUMERATED { very-bad (0), bad (1), neutral (2), good (3), very-good (4)} END
+message Message ::= data-response {
+  rid 113,
+  format { 1 1 1 },
+  type assessment,
+  provider "alice",
+  response {
+    {
+      source "alice",
+      target "bob",
+      service "seller",
+      date 10,
+      value INTEGER 5,
+    },
+    {
+      source "charlie",
+      target "bob",
+      service "seller",
+      date 20,
+      value INTEGER 3,
+    },
+  }
+}
 
-
-DataRequest:
- rid=2581
- type='assessment'
- query=Query:
-  log=Logical:
-   op='and'
-   l=Query:
-    cmp=Comparison:
-     op='eq'
-     value=Value:
-      target=bob
-   r=Query:
-    cmp=Comparison:
-     op='eq'
-     value=Value:
-      service=seller
-
-DataResponse:
- rid=2581
- format=1.1.1
- type='assessment'
- provider=python
- response=SequenceOf:
-  Rating:
-   source=charlie
-   target=bob
-   service=seller
-   date=37
-   value=0x0a0102
-  Rating:
-   source=david
-   target=bob
-   service=seller
-   date=53
-   value=0x0a0103
-  Rating:
-   source=eve
-   target=bob
-   service=seller
-   date=69
-   value=0x0a0104
+message Message ::= fault {
+  rid 10,
+  message "Details about the error"
+}
