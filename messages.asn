@@ -46,8 +46,10 @@ Query ::= CHOICE {
 }
 
 Constraint ::= [APPLICATION 5] IMPLICIT SEQUENCE {
-    operator  ENUMERATED { eq (0), ne (1), lt (2),
-                           le (3), gt (4), ge (5) },
+    operator  ENUMERATED {
+      eq (0), ne (1), lt (2),
+      le (3), gt (4), ge (5)
+    },
     value     Value
 }
 
@@ -66,7 +68,10 @@ Value ::= CHOICE {
 
 Fault ::= [APPLICATION 7] IMPLICIT SEQUENCE {
   rid     INTEGER,
-  value   ENUMERATED { invalid-parameters (0), internal-error (1) }, -- todo: remove!
+  value   ENUMERATED {
+    invalid-parameters (0),
+    internal-error (1)
+  }, -- todo: remove!
   message PrintableString
 }
 

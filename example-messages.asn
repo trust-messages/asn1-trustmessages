@@ -5,9 +5,25 @@ message Message ::= format-request 774
 message Message ::= format-response {
   rid 774,
   assessment-id { 1 1 1 }
-  assessment-def "Example ASN.1 definitions"
+  assessment-def "Formats DEFINITIONS ::=
+                  BEGIN
+                    QTM ::= ENUMERATED {
+                               very-bad (0),
+                               bad (1),
+                               neutral (2),
+                               good (3),
+                               very-good (4) }
+                  END"
   trust-id { 1 1 1 }
-  trust-def "Example ASN.1 definitions"
+  trust-def "Formats DEFINITIONS ::=
+                  BEGIN
+                    QTM ::= ENUMERATED {
+                               very-bad (0),
+                               bad (1),
+                               neutral (2),
+                               good (3),
+                               very-good (4) }
+                  END"
 }
 
 message Message ::= data-request {
@@ -22,9 +38,9 @@ message Message ::= data-request {
 message Message ::= data-request {
   rid 113,
   type assessment,
-  query cmp: {
-    op eq,
-    value target: "bob"
+  query con: {
+    operator ge,
+    value date: 1499356643
   }
 }
 
@@ -55,3 +71,40 @@ message Message ::= fault {
   rid 10,
   message "Details about the error"
 }
+
+
+127.0.0.1 5000 areq target=bob AND (service=seller OR service=buyer) AND date > 20
+-> ('127.0.0.1', 5000) [67B]
+(127.0.0.1, 54308): data-request [size=67B]
+DataRequest:
+ rid=29551
+ type='assessment'
+ query=Query:
+  exp=Expression:
+   operator='and'
+   left=Query:
+    exp=Expression:
+     operator='and'
+     left=Query:
+      con=Constraint:
+       operator='eq'
+       value=Value:
+        target=bob
+     right=Query:
+      exp=Expression:
+       operator='or'
+       left=Query:
+        con=Constraint:
+         operator='eq'
+         value=Value:
+          service=seller
+       right=Query:
+        con=Constraint:
+         operator='eq'
+         value=Value:
+          service=buyer
+   right=Query:
+    con=Constraint:
+     operator='gt'
+     value=Value:
+      date=20
