@@ -89,38 +89,34 @@ message Message ::= fault {
 }
 
 
-127.0.0.1 5000 areq target=bob AND (service=seller OR service=buyer) AND date > 20
--> ('127.0.0.1', 5000) [67B]
-(127.0.0.1, 54308): data-request [size=67B]
-DataRequest:
- rid=29551
- type='assessment'
- query=Query:
-  exp=Expression:
-   operator='and'
-   left=Query:
-    exp=Expression:
-     operator='and'
-     left=Query:
-      con=Constraint:
-       operator='eq'
-       value=Value:
-        target=bob
-     right=Query:
-      exp=Expression:
-       operator='or'
-       left=Query:
-        con=Constraint:
-         operator='eq'
-         value=Value:
-          service=seller
-       right=Query:
-        con=Constraint:
-         operator='eq'
-         value=Value:
-          service=buyer
-   right=Query:
-    con=Constraint:
-     operator='gt'
-     value=Value:
-      date=20
+message Message ::= data-request {
+  rid 591,
+  type assessment,
+  query exp: {
+    operator and,
+    left exp: {
+      operator and,
+      left con: {
+        operator eq,
+        value target: "bob"
+      },
+      right exp: {
+        operator or,
+        left con: {
+          operator eq,
+          value service: "seller"
+        },
+        right con: {
+          operator eq,
+          value service: "buyer"
+        }
+      }
+    },
+    right con: {
+      operator gt,
+      value date: 1499356643
+    }
+  }
+}
+
+target=bob AND (service=seller OR service=buyer) AND date > 1499356643
