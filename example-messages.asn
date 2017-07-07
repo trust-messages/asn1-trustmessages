@@ -44,6 +44,22 @@ message Message ::= data-request {
   }
 }
 
+message Message ::= data-request {
+  rid 113,
+  type assessment,
+  query exp: {
+    operator and,
+    left con: {
+      operator ge,
+      value date: 1499356643
+    },
+    right con: {
+      operator eq,
+      value target: "bob"
+    }
+  }
+}
+
 message Message ::= data-response {
   rid 113,
   format { 1 1 1 },
