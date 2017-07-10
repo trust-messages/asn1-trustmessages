@@ -48,10 +48,11 @@ You need the ANTLR v4.
 
 ```sh
 # Generate parser and lexer
-antlr4 Query.g4 -no-listener -visitor
+antlr4 Query.g4 -no-listener -visitor -package trustmessages.antlr
 
 # Compile generate Java classes either with
 javac -cp /usr/local/lib/antlr-4.6-complete.jar *.java
+
 # or using an alias: alias gcomp="javac -cp /usr/local/lib/antlr-4.6-complete.jar $*"
 gcomp *.java
 

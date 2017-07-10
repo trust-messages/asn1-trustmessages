@@ -1,6 +1,6 @@
 grammar Query;
 
-expr:   FIELD OP VALUE  # comparison
+expr:   FIELD OP VALUE  # constraint
     |   '(' expr ')'    # parenthesis
     |   expr 'AND' expr # and
     |   expr 'OR' expr  # or
