@@ -119,4 +119,4 @@ message Message ::= data-request {
   }
 }
 
-target=bob AND (service=seller OR service=buyer) AND date > 1499356643
+target = bob AND (service = seller OR service = buyer) AND date > 1499356643

@@ -55,7 +55,7 @@ Generate the lexer and parser.
 
 ```sh
 # Generate parser and lexer
-antlr4 Query.g4 -no-listener -visitor -package trustmessages.antlr
+antlr4 Query.g4 -no-listener -visitor
 
 # Compile generate Java classes either with
 javac -cp /usr/local/lib/antlr-4.6-complete.jar *.java
