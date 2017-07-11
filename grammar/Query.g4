@@ -1,9 +1,9 @@
 grammar Query;
 
-expr:   FIELD OP VALUE  # constraint
-    |   '(' expr ')'    # parenthesis
-    |   expr 'AND' expr # and
-    |   expr 'OR' expr  # or
+stat:   FIELD OP VALUE  # constraint
+    |   '(' stat ')'    # parenthesis
+    |   stat 'AND' stat # conjunction
+    |   stat 'OR' stat  # disjunction
     ;
 
 FIELD:  'source' | 'target' | 'service' | 'date' ;

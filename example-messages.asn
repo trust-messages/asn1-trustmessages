@@ -114,9 +114,9 @@ message Message ::= data-request {
     },
     right con: {
       operator gt,
-      value date: 1499356643
+      value date: 20
     }
   }
 }
 
-target = bob AND (service = seller OR service = buyer) AND date > 1499356643
+target = bob AND (service = seller OR service = buyer) AND date > 20
