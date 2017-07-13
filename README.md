@@ -18,16 +18,16 @@ Then modify the generated `messages.py` by adding the `Logical` and `Query` comm
 
 ```py
 for _ in range(10):
-    Logical.tagSet = univ.Sequence.tagSet.tagImplicitly(tag.Tag(tag.tagClassApplication, tag.tagFormatConstructed, 5))
-    Logical.componentType = namedtype.NamedTypes(
-        namedtype.NamedType('op', univ.Enumerated(namedValues=namedval.NamedValues(('and', 0), ('or', 1)))),
-        namedtype.NamedType('l', Query()),
-        namedtype.NamedType('r', Query())
+    Expression.tagSet = univ.Sequence.tagSet.tagImplicitly(tag.Tag(tag.tagClassApplication, tag.tagFormatConstructed, 6))
+    Expression.componentType = namedtype.NamedTypes(
+        namedtype.NamedType('operator', univ.Enumerated(namedValues=namedval.NamedValues(('and', 0), ('or', 1)))),
+        namedtype.NamedType('left', Query()),
+        namedtype.NamedType('right', Query())
     )
     Query.componentType = namedtype.NamedTypes(
-        namedtype.NamedType('cmp', Comparison()),
-        namedtype.NamedType('log', Logical())
-    )
+        namedtype.NamedType('con', Constraint()),
+        namedtype.NamedType('exp', Expression())
+)
 ```
 
 ## Java ASN.1 messages

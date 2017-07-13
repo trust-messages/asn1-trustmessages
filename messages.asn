@@ -1,11 +1,14 @@
 Messages DEFINITIONS ::= BEGIN
 
-Message ::= CHOICE {
-  data-request      DataRequest,
-  data-response     DataResponse,
-  format-request    FormatRequest,
-  format-response   FormatResponse,
-  fault             Fault
+Message ::= SEQUENCE {
+  version INTEGER,
+  payload CHOICE {
+    data-request      DataRequest,
+    data-response     DataResponse,
+    format-request    FormatRequest,
+    format-response   FormatResponse,
+    fault             Fault
+  }
 }
 
 FormatRequest ::= [APPLICATION 0] IMPLICIT INTEGER
@@ -68,10 +71,6 @@ Value ::= CHOICE {
 
 Fault ::= [APPLICATION 7] IMPLICIT SEQUENCE {
   rid     INTEGER,
-  value   ENUMERATED {
-    invalid-parameters (0),
-    internal-error (1)
-  }, -- todo: remove!
   message PrintableString
 }
 

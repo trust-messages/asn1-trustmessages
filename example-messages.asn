@@ -1,120 +1,134 @@
 http://asn1-playground.oss.com/
 
-message Message ::= format-request 774
-
-message Message ::= format-response {
-  rid 774,
-  assessment-id { 1 1 1 }
-  assessment-def "Formats DEFINITIONS ::=
-                  BEGIN
-                    QTM ::= ENUMERATED {
-                               very-bad (0),
-                               bad (1),
-                               neutral (2),
-                               good (3),
-                               very-good (4) }
-                  END"
-  trust-id { 1 1 1 }
-  trust-def "Formats DEFINITIONS ::=
-                  BEGIN
-                    QTM ::= ENUMERATED {
-                               very-bad (0),
-                               bad (1),
-                               neutral (2),
-                               good (3),
-                               very-good (4) }
-                  END"
+message Message ::= {
+  version 1,
+  payload format-request 774
 }
 
-message Message ::= data-request {
-  rid 113,
-  type assessment,
-  query cmp: {
-    op eq,
-    value: source "alice"
+message Message ::= {
+  version 1,
+  payload format-response: {
+    rid             774,
+    assessment-id   { 1 1 1 }
+    assessment-def  "Formats DEFINITIONS ::=
+                     BEGIN
+                       QTM ::= ENUMERATED {
+                         very-bad (0),
+                         bad (1),
+                         neutral (2),
+                         good (3),
+                         very-good (4)
+                       }
+                     END"
+    trust-id        { 1 1 1 }
+    trust-def       "Formats DEFINITIONS ::=
+                     BEGIN
+                      QTM ::= ENUMERATED {
+                        very-bad (0),
+                        bad (1),
+                        neutral (2),
+                        good (3),
+                        very-good (4)
+                      }
+                    END"
   }
 }
 
-message Message ::= data-request {
-  rid 113,
-  type assessment,
-  query con: {
-    operator ge,
-    value date: 1499356643
-  }
-}
-
-message Message ::= data-request {
-  rid 113,
-  type assessment,
-  query exp: {
-    operator and,
-    left con: {
+message Message ::= {
+  version 1,
+  payload data-request: {
+    rid 113,
+    type assessment,
+    query con: {
       operator ge,
       value date: 1499356643
-    },
-    right con: {
-      operator eq,
-      value target: "bob"
     }
   }
 }
 
-message Message ::= data-response {
-  rid 113,
-  format { 1 1 1 },
-  type assessment,
-  provider "alice",
-  response {
-    {
-      source "alice",
-      target "bob",
-      service "seller",
-      date 10,
-      value '0a0103'H
-    },
-    {
-      source "charlie",
-      target "bob",
-      service "seller",
-      date 20,
-      value '0a0104'H
-    }
-  }
-}
-
-message Message ::= fault {
-  rid 10,
-  message "Details about the error"
-}
-
-
-message Message ::= data-request {
-  rid 591,
-  type assessment,
-  query exp: {
-    operator and,
-    left exp: {
+message Message ::= {
+  version 1,
+  payload data-request: {
+    rid 113,
+    type assessment,
+    query exp: {
       operator and,
       left con: {
+        operator ge,
+        value date: 1499356643
+      },
+      right con: {
         operator eq,
         value target: "bob"
+      }
+    }
+  }
+}
+
+message Message ::= {
+  version 1,
+  payload data-response: {
+    rid 113,
+    format { 1 1 1 },
+    type assessment,
+    provider "alice",
+    response {
+      {
+        source "alice",
+        target "bob",
+        service "seller",
+        date 10,
+        value '0a0103'H
       },
-      right exp: {
-        operator or,
+      {
+        source "charlie",
+        target "bob",
+        service "seller",
+        date 20,
+        value '0a0104'H
+      }
+    }
+  }
+}
+
+message Message ::= {
+  version 1,
+  payload fault: {
+    rid 10,
+    message "Details about the error"
+  }
+}
+
+
+message Message ::= {
+  version 1,
+  payload data-request {
+    rid 591,
+    type assessment,
+    query exp: {
+      operator and,
+      left exp: {
+        operator and,
         left con: {
           operator eq,
-          value service: "seller"
+          value target: "bob"
         },
-        right con: {
-          operator eq,
-          value service: "buyer"
+        right exp: {
+          operator or,
+          left con: {
+            operator eq,
+            value service: "seller"
+          },
+          right con: {
+            operator eq,
+            value service: "buyer"
+          }
         }
+      },
+      right con: {
+        operator gt,
+        value date: 20
       }
-    },
-    right con: {
-      operator gt,
-      value date: 20
     }
   }
 }
