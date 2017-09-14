@@ -95,7 +95,7 @@ message Message ::= {
   version 1,
   payload fault: {
     rid 10,
-    message "Details about the error"
+    message "Internal error. Try again later."
   }
 }
 
