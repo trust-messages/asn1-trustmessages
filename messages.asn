@@ -1,4 +1,4 @@
-Messages DEFINITIONS ::= BEGIN
+Messages DEFINITIONS AUTOMATIC TAGS ::= BEGIN
 
 Message ::= SEQUENCE {
   version INTEGER,
@@ -11,9 +11,9 @@ Message ::= SEQUENCE {
   }
 }
 
-FormatRequest ::= [APPLICATION 0] IMPLICIT INTEGER
+FormatRequest ::= INTEGER
 
-FormatResponse ::= [APPLICATION 1] IMPLICIT SEQUENCE {
+FormatResponse ::= SEQUENCE {
   rid             INTEGER,
   assessment-id   Format,
   assessment-def  PrintableString,
@@ -21,13 +21,13 @@ FormatResponse ::= [APPLICATION 1] IMPLICIT SEQUENCE {
   trust-def       PrintableString
 }
 
-DataRequest ::= [APPLICATION 2] IMPLICIT SEQUENCE {
+DataRequest ::= SEQUENCE {
   rid   INTEGER,
   type  ENUMERATED { trust (0), assessment (1) },
   query Query
 }
 
-DataResponse ::= [APPLICATION 3] IMPLICIT SEQUENCE {
+DataResponse ::= SEQUENCE {
   rid       INTEGER,
   format    Format,
   type      ENUMERATED { trust (0), assessment (1) },
@@ -35,12 +35,13 @@ DataResponse ::= [APPLICATION 3] IMPLICIT SEQUENCE {
   response  SEQUENCE OF Rating
 }
 
-Rating ::= [APPLICATION 4] IMPLICIT SEQUENCE {
+Rating ::= SEQUENCE {
   source  Entity,
   target  Entity,
   service Service,
   date    BinaryTime,
-  value   ANY
+  value   OCTET STRING
+-- ANY
 }
 
 Query ::= CHOICE {
@@ -48,7 +49,7 @@ Query ::= CHOICE {
   exp Expression
 }
 
-Constraint ::= [APPLICATION 5] IMPLICIT SEQUENCE {
+Constraint ::= SEQUENCE {
     operator  ENUMERATED {
       eq (0), ne (1), lt (2),
       le (3), gt (4), ge (5)
@@ -56,20 +57,20 @@ Constraint ::= [APPLICATION 5] IMPLICIT SEQUENCE {
     value     Value
 }
 
-Expression ::= [APPLICATION 6] IMPLICIT SEQUENCE {
+Expression ::= SEQUENCE {
   operator  ENUMERATED { and (0), or (1) },
   left      Query,
   right     Query
 }
 
 Value ::= CHOICE {
-  source  [APPLICATION 0] IMPLICIT Entity,
-  target  [APPLICATION 1] IMPLICIT Entity,
-  date    [APPLICATION 2] IMPLICIT BinaryTime,
-  service [APPLICATION 3] IMPLICIT Service
+  source  Entity,
+  target  Entity,
+  date    BinaryTime,
+  service Service
 }
 
-Fault ::= [APPLICATION 7] IMPLICIT SEQUENCE {
+Fault ::= SEQUENCE {
   rid     INTEGER,
   message PrintableString
 }
