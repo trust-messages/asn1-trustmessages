@@ -25,14 +25,14 @@ FormatResponse ::= [APPLICATION 1] IMPLICIT SEQUENCE {
 
 DataRequest ::= [APPLICATION 2] IMPLICIT SEQUENCE {
   rid   INTEGER,
-  type  ENUMERATED { trust (0), assessment (1) },
+  type  Type,
   query Query
 }
 
 DataResponse ::= [APPLICATION 3] IMPLICIT SEQUENCE {
   rid       INTEGER,
   format    Format,
-  type      ENUMERATED { trust (0), assessment (1) },
+  type      Type,
   response  SEQUENCE OF Rating
 }
 
@@ -74,6 +74,27 @@ Value ::= CHOICE {
 Fault ::= [APPLICATION 7] IMPLICIT SEQUENCE {
   rid     INTEGER,
   message IA5String
+}
+
+DataSubscription ::= [APPLICATION 8] IMPLICIT SEQUENCE {
+  type  Type OPTIONAL,
+  query Query OPTIONAL
+}
+
+DataCancellation ::= [APPLICATION 9] IMPLICIT SEQUENCE {
+  type  Type OPTIONAL,
+  query Query OPTIONAL
+}
+
+DataUpdate ::= [APPLICATION 10] IMPLICIT SEQUENCE {
+  format  Format,
+  type    Type,
+  rating  Rating
+}
+
+Type ::=  ENUMERATED {
+  trust (0),
+  assessment (1)
 }
 
 Format ::= OBJECT IDENTIFIER
