@@ -42,7 +42,7 @@ Rating ::= [APPLICATION 4] IMPLICIT SEQUENCE {
   service Service,
   date    BinaryTime,
   value   OCTET STRING
--- ANY
+-- ANY is replaced by OCTET STRING because some libraries do not support ANY; both work the same
 }
 
 Query ::= CHOICE {
