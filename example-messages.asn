@@ -2,11 +2,15 @@ http://asn1-playground.oss.com/
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload format-request 774
 }
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload format-response: {
     rid             774,
     assessment-id   { 1 1 1 }
@@ -36,6 +40,8 @@ message Message ::= {
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload data-request: {
     rid 113,
     type assessment,
@@ -48,6 +54,8 @@ message Message ::= {
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload data-request: {
     rid 113,
     type assessment,
@@ -67,11 +75,12 @@ message Message ::= {
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload data-response: {
     rid 113,
     format { 1 1 1 },
     type assessment,
-    provider "alice",
     response {
       {
         source "alice",
@@ -93,6 +102,8 @@ message Message ::= {
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload fault: {
     rid 10,
     message "Internal error. Try again later."
@@ -102,6 +113,8 @@ message Message ::= {
 
 message Message ::= {
   version 1,
+  caller "aaaaa",
+  callee "bbbbb",
   payload data-request {
     rid 591,
     type assessment,
