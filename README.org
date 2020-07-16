@@ -1,0 +1,92 @@
+* Definitions of trust messages in ASN.1
+
+This project contains definitions of trust messages in ASN.1 format and the grammar for constructing queries from string statements. To compile bindings for Java or Python, follow instructions below.
+
+However, all these steps have already been taken in two example project:
+-  Python Trust Messages, and
+-  Java Trust Messages.
+
+See README files of those two projects for more information.
+
+** Python ASN.1 messages
+To compile ASN.1 specs in python classes (source file =messages.asn=, destination file =messages.py=), you need two libraries:
+
+-  [[https://github.com/kimgr/asn1ate][asn1ate -- Python ASN.1 compiler.]] for translating ASN.1 specs into Python code;
+-  [[http://pyasn1.sourceforge.net][PyASN.1 -- Python library for ASN.1]] for using compiled classes.
+
+Once you install those two libraries, run the following:
+
+#+BEGIN_SRC sh
+python [path-to-asn1ate-lib]/pyasn1gen.py messages.asn > messages.py
+#+END_SRC
+
+In my case (it will likely be different on your machine):
+#+BEGIN_SRC sh
+python /home/david/Development/python/virtualenvs/trust-messages/lib/python3.5/site-packages/asn1ate/pyasn1gen.py \
+    messages.asn > ~/Development/trust-messages/py-trustmessages/trustmessages/messages.py
+#+END_SRC
+
+Then modify the generated =messages.py= by adding the =Logical= and =Query= commands into a loop; this is a trick to make PyASN.1 work with recursive data-types.
+
+#+BEGIN_EXAMPLE python
+for _ in range(10):
+    Expression.tagSet = univ.Sequence.tagSet.tagImplicitly(tag.Tag(tag.tagClassApplication, tag.tagFormatConstructed, 6))
+    Expression.componentType = namedtype.NamedTypes(
+        namedtype.NamedType('operator', univ.Enumerated(namedValues=namedval.NamedValues(('and', 0), ('or', 1)))),
+        namedtype.NamedType('left', Query()),
+        namedtype.NamedType('right', Query())
+    )
+    Query.componentType = namedtype.NamedTypes(
+        namedtype.NamedType('con', Constraint()),
+        namedtype.NamedType('exp', Expression())
+)
+#+END_EXAMPLE
+
+** Java ASN.1 messages
+
+Java classes can be generated with [[https://www.openmuc.org/asn1/download][OpenMUC jasn1-compiler.]] Once installed, run it against the messages file:
+- Core messages: =./jasn1-compiler -l -o "generated" -p "trustmessages.asn" -f ~/Development/trust-messages/asn1-trustmessages/messages.asn=
+- Sample trust formats: =./jasn1-compiler -p "trustmessages.asn" -f ~/Development/trust-messages/asn1-trustmessages/formats.asn=
+
+** Grammar for parsing query statements: Java lexer and parser
+You need to have [[http://www.antlr.org][ANTLR 4]] installed. Follow the installation instructions on their homepage. But in short (could be outdated):
+- Download the ANTLR: =cd /usr/local/lib && sudo curl -O http://www.antlr.org/download/antlr-4.6-complete.jar=
+- Put the following aliases into ~/.bashrc and restart your shell
+#+BEGIN_SRC sh
+alias antlr4='java -jar /usr/local/lib/antlr-4.6-complete.jar'
+alias grun="java -cp .:/usr/local/lib/antlr-4.6-complete.jar org.antlr.v4.gui.TestRig"
+alias gcomp="javac -cp /usr/local/lib/antlr-4.6-complete.jar $*"
+alias gexec="java -cp .:/usr/local/lib/antlr-4.6-complete.jar $*"
+#+END_SRC
+
+Generate the lexer and parser.
+#+BEGIN_SRC sh
+# Generate parser and lexer
+antlr4 Query.g4 -no-listener -visitor
+
+# Compile generate Java classes either with
+javac -cp /usr/local/lib/antlr-4.6-complete.jar *.java
+
+# or using an alias: alias gcomp="javac -cp /usr/local/lib/antlr-4.6-complete.jar $*"
+gcomp *.java
+#+END_SRC
+
+Test the grammar
+
+#+BEGIN_SRC sh
+# Check generated tokens
+grun Query expr -tokens
+
+# Check generated parse tree in LISP notation
+grun Query expr -tree
+
+# Check generated parse tree with a GUI
+grun Query expr -gui
+#+END_SRC
+
+** Grammar for parsing query statements: Python lexer and parser
+You need [[http://www.antlr.org][ANTLR v4.]]
+#+BEGIN_SRC sh
+# Generate parser, lexer and a default visitor implementation
+antlr4 Query.g4 -no-listener -visitor -Dlanguage=Python2
+#+END_SRC
