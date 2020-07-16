@@ -1,3 +1,4 @@
+-- this are two example definitions
 Formats DEFINITIONS ::= BEGIN
 
 QTM ::= ENUMERATED {

@@ -1,5 +1,3 @@
-http://asn1-playground.oss.com/
-
 message Message ::= {
   version 1,
   caller "aaaaa",
@@ -145,5 +143,3 @@ message Message ::= {
     }
   }
 }
-
-target = bob AND (service = seller OR service = buyer) AND date > 20
