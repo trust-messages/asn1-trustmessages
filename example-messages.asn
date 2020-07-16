@@ -13,7 +13,7 @@ message Message ::= {
   callee "bbbbb",
   payload format-response: {
     rid             774,
-    assessment-id   { 1 1 1 }
+    assessment-id   { 1 1 1 },
     assessment-def  "Formats DEFINITIONS ::=
                      BEGIN
                        QTM ::= ENUMERATED {
@@ -23,8 +23,8 @@ message Message ::= {
                          good (3),
                          very-good (4)
                        }
-                     END"
-    trust-id        { 1 1 1 }
+                     END",
+    trust-id        { 1 1 1 },
     trust-def       "Formats DEFINITIONS ::=
                      BEGIN
                       QTM ::= ENUMERATED {
